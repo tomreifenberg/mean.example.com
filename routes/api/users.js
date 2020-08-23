@@ -12,3 +12,5 @@ router.get('/', function(req, res, next) {
 });
 
 module.exports = router;
+
+//This is where we left off for bootcamp on 08/20/20. Going to jump into more details on 08/25/20
