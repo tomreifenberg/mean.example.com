@@ -279,9 +279,9 @@ var usersApp = (function() {
       
               <div class="text-center">
                 <br>
-                <a class="btn btn-lg btn-danger text-white">
-                  Yes delete ${data.user.username}
-                </a>
+                <a onclick="usersApp.deleteUser('${data.user._id}');" class="btn btn-lg btn-danger text-white">
+                Yes delete ${data.user.username}
+              </a>
               </div>
       
             </div>
@@ -289,6 +289,31 @@ var usersApp = (function() {
       
           app.innerHTML = card;
         }
+      }
+
+      function deleteUser(id){
+
+        let uri = `${window.location.origin}/api/users/${id}`;
+        let xhr = new XMLHttpRequest();
+        xhr.open('DELETE', uri);
+      
+        xhr.setRequestHeader(
+          'Content-Type',
+          'application/json; charset=UTF-8'
+        );
+      
+        xhr.send();
+      
+        xhr.onload = function(){
+          let data = JSON.parse(xhr.response);
+          if(data.success === true){
+            window.location.hash = '#';
+          }else{
+            alert('Unknown error, the user could not be deleted');
+          }
+      
+        }
+      
       }
 
     return {
@@ -318,10 +343,18 @@ var usersApp = (function() {
             viewUsers();
             break;
         }
-      }
+    },
+
+    deleteUser: function(id){
+      deleteUser(id);
+    }
     }
   
   })();
   
   usersApp.load();
+
+  window.addEventListener("hashchange", function(){
+    usersApp.load();
+  });
   
